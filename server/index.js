@@ -1,34 +1,36 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 const connectDB = require("./config/connectDB");
-const router = require('./routes/index')
-const cookiesParser = require('cookie-parser')
-const {app, server} = require('./socket/index')
+const router = require("./routes/index");
+const cookieParser = require("cookie-parser");
+const { app, server, io } = require("./socket/index"); // include io if needed for global use
 
-// const app = express();
+const cors = require("cors");
 
-// Middleware
-app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
-}));
-app.use(express.json()); // for parsing JSON
-app.use(cookiesParser())
+// ✅ Middleware (CORS setup moved into socket/index.js too)
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL, // your frontend Render URL
+    credentials: true,
+  })
+);
 
-const PORT = process.env.PORT || 8000;
+app.use(cookieParser());
+app.use(express.json());
 
+// ✅ Root test route
 app.get("/", (req, res) => {
-    res.send("Server is started");
+  res.send("✅ Server is started");
 });
 
-// API endpoints
-app.use('/api', router)
+// ✅ All API routes
+app.use("/api", router);
 
+// ✅ Connect to MongoDB
 connectDB();
 
-
-
+// ✅ Start the HTTP + Socket.IO server
+const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
