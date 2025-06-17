@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 const connectDB = require("./config/connectDB");
+const express = require('express')
 const router = require("./routes/index");
 const cookieParser = require("cookie-parser");
 const { app, server, io } = require("./socket/index"); // include io if needed for global use
