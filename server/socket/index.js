@@ -15,7 +15,6 @@ const io = new Server(server, {
         origin: process.env.FRONTEND_URL,
         credentials: true
     },
-    transports: ['websocket'], // <--- add this line
 });
 
 /***
